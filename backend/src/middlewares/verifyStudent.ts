@@ -7,10 +7,18 @@ const verifyUser = (req: Request, res: Response, next: NextFunction) => {
 
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err: any, data: any) => {
-      if (err && !data) return res.status(403).json({ error: "Forbidden" });
-      if (!data) return res.status(403).json({ error: "Forbidden" });
-      req.user = data.user;
-      next();
+      if (err && !data)
+        return res
+          .status(403)
+          .json({ error: "Authetication error please relogin" });
+      if (!data)
+        return res
+          .status(403)
+          .json({ error: "Authetication error please relogin" });
+      if (data.user.user === "student") {
+        req.user = data.user;
+        next();
+      }
     });
   } else {
     res.status(403).json({ error: "No Token" });

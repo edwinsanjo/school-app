@@ -1,8 +1,12 @@
-export type User = {
-  id: string;
+export type user = {
   email: string;
   name: string;
-  isAdmin: boolean;
+  password: string;
+  secret: string;
+  user: string;
+  class?: number;
+  section?: string;
+  teacher?: object;
 };
 
 declare global {
@@ -16,7 +20,7 @@ declare global {
   }
   namespace Express {
     export interface Request {
-      user: User;
+      user: any;
     }
   }
 }

@@ -11,7 +11,9 @@ router.get("/", [verifyTeacher, verifyAdmin], (req: Request, res: Response) => {
 router.post(
   "/addstudent",
   [verifyTeacher, verifyAdmin],
-  (req: Request, res: Response) => {}
+    (req: Request, res: Response) => {
+      
+  }
 );
 
 export default router;

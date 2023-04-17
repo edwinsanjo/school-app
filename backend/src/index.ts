@@ -10,7 +10,7 @@ app
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
   .use(cors())
-  .use(logger("dev"));
+  .use(logger("common"));
 
 const options = {
   useNewUrlParser: true,
@@ -23,16 +23,18 @@ mongoose.connection
   .once("open", () => console.log("Connected successfully"));
 
 import AuthRoutes from "./routes/auth.routes";
-import userRoutes from "./routes/user.routes";
-import adminRoutes from "./routes/admin.routes";
+import StudentRoutes from "./routes/student.routes";
+import TeacherRoutes from "./routes/teacher.routes";
+import AdminRoutes from "./routes/admin.routes";
 
 app
   .use("/auth", AuthRoutes)
-  .use("/user", userRoutes)
-  .use("/admin", adminRoutes);
+  .use("/student", StudentRoutes)
+  .use("/teacher", TeacherRoutes)
+  .use("/admin", AdminRoutes);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Server Workin! Ping Pong");
+  res.send("Server Working! Ping Pong");
 });
 
 app.listen(process.env.PORT, () =>
