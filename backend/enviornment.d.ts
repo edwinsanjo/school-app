@@ -7,6 +7,7 @@ export type user = {
   class?: number;
   section?: string;
   teacher?: object;
+  avatar: string;
 };
 
 declare global {

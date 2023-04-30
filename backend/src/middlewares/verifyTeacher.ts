@@ -7,13 +7,20 @@ const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
 
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err: any, data: any) => {
-      if (err) return res.status(403).json({ error: "Authetication error please relogin" });
-      if (!data) return res.status(403).json({ error: "Authetication error please relogin" });
-      if (data.user.user === "teacher") {
+      if (err)
+        return res
+          .status(403)
+          .json({ error: "Authetication error please relogin" });
+      if (!data)
+        return res
+          .status(403)
+          .json({ error: "Authetication error please relogin" });
+
+      if (data.user.user === "teacher" || "admin") {
         req.user = data.user;
         next();
       } else {
-        res.status(403).json({ error: "Forbidden" });
+        res.status(403).json({ error: "You Dont have permission to do that" });
       }
     });
   } else {

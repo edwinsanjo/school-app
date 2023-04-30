@@ -3,10 +3,15 @@ import { ToastContainer } from "react-toastify";
 
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { LoginPage } from "./pages/LoginPage"
-import { RegisterPage } from "./pages/RegisterPage"
-import { Logout } from "./pages/Logout"
+
+import { AppPage } from "./pages/AppPage";
 import { ProfilePage } from "./pages/ProfilePage"
+
+import { AuthPage } from "./pages/auth/AuthPage"
+import { PasswordPage } from "./pages/auth/PasswordPage"
+import { SecretPage } from "./pages/auth/SecretPage"
+import { Logout } from "./pages/auth/Logout"
+import { SetPasswordPage } from "./pages/auth/SetPasswordPage"
 
 export const Router = () => {
 
@@ -16,9 +21,15 @@ export const Router = () => {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="/*" element={<NotFoundPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+
+          {/* auth */}
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/password" element={<PasswordPage />} />
+          <Route path="/auth/secret" element={<SecretPage />} />
+          <Route path="/auth/setpassword" element={<SetPasswordPage />} />
           <Route path="/logout" element={<Logout />} />
+
+          <Route path="/app" element={<AppPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>

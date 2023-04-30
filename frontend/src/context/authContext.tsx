@@ -11,33 +11,27 @@ function AuthProvider({ children }) {
     const [user, setUser] = useState({
         isLoggedIn: false,
         token: "",
-        user: {}
+        user: {},
+        auth: {},
     });
-
     useEffect(() => {
         const token = localStorage.getItem("token")
         if (token) {
             if (user.isLoggedIn === true) return
-
-
             axios.defaults.headers.common['x-auth-token'] = token;
             axios.get("/auth/getuserdata").then((data) => {
                 setUser({
                     isLoggedIn: true,
                     token: token,
                     user: data.data.user,
+                    auth: { none: true },
                 })
             }, (err) => {
                 toast.error("Authentication error Please Relogin")
             })
         }
     }, [])
-
-    return (
-        <authContext.Provider value={{ user, setUser }}>
-            {children}
-        </authContext.Provider>
-    );
+    return (<authContext.Provider value={{ user, setUser }}>{children}</authContext.Provider>);
 }
 
 export { AuthProvider, authContext };

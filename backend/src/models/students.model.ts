@@ -10,6 +10,7 @@ export interface IUser extends Document {
   section: string;
   secret: string;
   user: string;
+  avatar: string;
 }
 
 const UserSchema: Schema = new Schema({
@@ -26,5 +27,4 @@ const UserSchema: Schema = new Schema({
   },
 });
 
-// Export the model and return your IUser interface
 export default mongoose.model<IUser>("students", UserSchema);

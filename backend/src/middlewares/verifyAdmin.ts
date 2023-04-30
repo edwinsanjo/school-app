@@ -19,7 +19,7 @@ const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
         req.user = data.user;
         next();
       } else {
-        res.status(403).json({ error: "Forbidden" });
+        res.status(403).json({ error: "You Dont have permission to do that" });
       }
     });
   } else {
