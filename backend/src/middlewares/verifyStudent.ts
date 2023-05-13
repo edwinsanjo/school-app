@@ -11,11 +11,12 @@ const verifyUser = (req: Request, res: Response, next: NextFunction) => {
         return res
           .status(403)
           .json({ error: "Authetication error please relogin" });
+      if (err) return;
       if (!data)
         return res
           .status(403)
           .json({ error: "Authetication error please relogin" });
-      if (data.user.user === "student") {
+      if (data.user.user === "student" || "teacher" || "admin") {
         req.user = data.user;
         next();
       }

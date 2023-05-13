@@ -30,6 +30,13 @@ router.post(
   async (req: Request, res: Response) => {
     try {
       if (!req.body) return res.send(await studentsModel.find());
+      if (req.body._id) {
+        try {
+          res.send(await studentsModel.findById(req.body._id));
+        } catch (error) {
+          res.status(500).json({ error: "some error occured" });
+        }
+      }
       if (req.body.classNo) {
         let data = await studentsModel.find({ classNo: req.body.classNo });
         return res.send(data);
@@ -69,5 +76,9 @@ router.post(
     }
   }
 );
+
+router.post("/editStudent", verifyTeacher, (req:Request, res:Response) => {
+   
+})
 
 export default router;

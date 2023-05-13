@@ -1,16 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
-import { useTitle } from "../../utils/changeTitle";
+import { useTitle } from "../../hooks/useChangeTitle";
 import { toast } from 'react-toastify';
 import axios from 'axios'
 import { authContext } from "../../context/authContext";
+import { userFunctions } from "../../hooks/useUserFunctions";
 
 export const AuthPage = () => {
     useTitle("Login")
     const navigate = useNavigate()
+    let { emailAuth } = userFunctions()
 
     const [email, setEmail] = useState("")
-    const { user, setUser }: any = useContext(authContext)
+    const { user, setUser } = useContext(authContext)
+
     useEffect(() => {
         if (user.isLoggedIn) return navigate("/app")
     }, [])
@@ -51,6 +54,8 @@ export const AuthPage = () => {
                 } else navigate("/login")
             }, (err) => {
                 toast.error(err.response.data.error)
+                console.log(err);
+
             })
         } catch (error) {
             toast.error("some error occured. please try again later")

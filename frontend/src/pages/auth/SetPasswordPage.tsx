@@ -17,9 +17,11 @@ export const SetPasswordPage = () => {
 
     const submitHandler = async () => {
         if (!newPassword) return toast.error("Email Not Found")
+        console.log(user);
+
 
         try {
-            await axios.post("/auth/secret", {
+            await axios.post("/auth/setpassword", {
                 password: newPassword,
                 token: user.auth.token
             }).then(({ data }) => {
@@ -31,6 +33,8 @@ export const SetPasswordPage = () => {
                         user: data.user,
                         auth: { none: true },
                     })
+                    console.log(user);
+
                     localStorage.setItem("token", data.token)
                     navigate("/app")
                 } else navigate("/auth")
@@ -49,7 +53,7 @@ export const SetPasswordPage = () => {
                 <h1 className="font-bold text-4xl mb-8">Login</h1>
 
                 <div className="mb-6">
-                    <p className="">Authentication</p>
+                    <p className="">new password</p>
                     <div className="flex mb-5 border-2 border-black border-opacity-25">
                         <div className="h-10 w-10 opacity-25 p-2 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

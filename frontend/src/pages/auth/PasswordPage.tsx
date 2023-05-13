@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
-import { useTitle } from "../utils/changeTitle";
+import { useTitle } from "../../utils/changeTitle";
 import { toast } from 'react-toastify';
 import axios from 'axios'
-import { authContext } from "../context/authContext";
+import { authContext } from "../../context/authContext";
 
 export const PasswordPage = () => {
     useTitle("Login")

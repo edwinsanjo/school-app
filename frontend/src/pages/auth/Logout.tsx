@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { useTitle } from "../utils/changeTitle";
-import { authContext } from "../context/authContext";
+import { useTitle } from "../../utils/changeTitle";
+import { authContext } from "../../context/authContext";
 
 export const Logout = () => {
     let navigate = useNavigate();

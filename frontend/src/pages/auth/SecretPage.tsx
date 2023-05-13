@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
-import { useTitle } from "../utils/changeTitle";
+import { useTitle } from "../../utils/changeTitle";
 import { toast } from 'react-toastify';
 import axios from 'axios'
-import { authContext } from "../context/authContext";
+import { authContext } from "../../context/authContext";
 
 export const SecretPage = () => {
     useTitle("Authentication")
@@ -25,6 +25,8 @@ export const SecretPage = () => {
                 secret,
                 token: user.auth.token
             }).then(({ data }) => {
+                console.log(data);
+                
                 if (data) {
                     setUser({
                         isLoggedIn: false,
@@ -49,7 +51,7 @@ export const SecretPage = () => {
                 <h1 className="font-bold text-4xl mb-8">Login</h1>
 
                 <div className="mb-6">
-                    <p className="">Authentication</p>
+                    <p className="">secret</p>
                     <div className="flex mb-5 border-2 border-black border-opacity-25">
                         <div className="h-10 w-10 opacity-25 p-2 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

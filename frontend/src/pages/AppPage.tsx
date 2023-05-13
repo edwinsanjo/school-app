@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom"
 
 export const AppPage = () => {
     let { user, setUser }: any = useContext(authContext)
+    console.log(user);
+
     const navigate = useNavigate();
     useEffect(() => {
-        if (user.isLoggedIn === false) return navigate("/auth");
         if (!user.user) return navigate("/logout")
+        if (user.isLoggedIn === false) return navigate("/auth")
     }, [])
     return (
         <div className="flex justify-center h-screen w-screen pt-32">

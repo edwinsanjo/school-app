@@ -10,7 +10,7 @@ app
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
   .use(cors())
-  .use(logger("common"));
+  .use(logger("dev"));
 
 const options = {
   useNewUrlParser: true,
