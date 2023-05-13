@@ -10,10 +10,8 @@ export const AuthPage = () => {
     useTitle("Login")
     const navigate = useNavigate()
     let { emailAuth } = userFunctions()
-
-    const [email, setEmail] = useState("")
     const { user, setUser } = useContext(authContext)
-
+    const [email, setEmail] = useState("")
     useEffect(() => {
         if (user.isLoggedIn) return navigate("/app")
     }, [])
@@ -21,46 +19,13 @@ export const AuthPage = () => {
     const submitHandler = async () => {
         if (!email) return toast.error("Email Not Found")
 
-        try {
-            await axios.post("/auth/email", {
-                email,
-            }).then(({ data }) => {
-                if (data) {
-                    if (data.type === "password") {
-                        setUser({
-                            isLoggedIn: false,
-                            token: "",
-                            ...user,
-                            auth: {
-                                type: "password",
-                                token: data.token,
-                                none: false
-                            }
-                        })
-                        navigate("/auth/password")
-                    } else if (data.type === "secret") {
-                        setUser({
-                            isLoggedIn: false,
-                            token: "",
-                            ...user,
-                            auth: {
-                                type: "secret",
-                                token: data.token,
-                                none: false
-                            }
-                        })
-                        navigate("/auth/secret")
-                    } else toast.error("some error occured please refresh this window")
-                } else navigate("/login")
-            }, (err) => {
-                toast.error(err.response.data.error)
-                console.log(err);
+        emailAuth(email).then(() => {
+            console.log(user)
+        }, (err) => {
+            console.log(err);
+            toast.error(err.toString())
 
-            })
-        } catch (error) {
-            toast.error("some error occured. please try again later")
-            console.log(error);
-        }
+        })
     }
 
     return (
@@ -69,7 +34,7 @@ export const AuthPage = () => {
                 <h1 className="font-bold text-4xl mb-8">Login</h1>
 
                 <div className="mb-6">
-                    <p className="">Authentication</p>
+                    <p className="">email</p>
                     <div className="flex mb-5 border-2 border-black border-opacity-25">
                         <div className="h-10 w-10 opacity-25 p-2 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

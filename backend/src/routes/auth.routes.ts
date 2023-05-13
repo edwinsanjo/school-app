@@ -48,10 +48,10 @@ router.post("/email", async (req: Request, res: Response) => {
       return res.status(400).json({ error: "No User Found" });
     if (user.password === "") {
       let jwtToke = jwt.sign({ email }, "thisisasecretlogin");
-      res.status(500).json({ error: { type: "secret", token: jwtToke } });
+      res.json({ type: "secret", token: jwtToke } );
     } else {
       let jwtToken = jwt.sign({ email }, "thisisapasswordlogin");
-      res.status(500).json({ error: { type: "password", token: jwtToken } });
+      res.json( { type: "password", token: jwtToken } );
     }
   } catch (e) {
     return res

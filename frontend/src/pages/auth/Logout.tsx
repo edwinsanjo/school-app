@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { useTitle } from "../../utils/changeTitle";
+import { useTitle } from "../../hooks/useChangeTitle";
 import { authContext } from "../../context/authContext";
 
 export const Logout = () => {

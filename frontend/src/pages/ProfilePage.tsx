@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { useTitle } from "../utils/changeTitle";
+import { useTitle } from "../hooks/useChangeTitle";
 import { authContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
-import { useTitle } from "../../utils/changeTitle";
+import { useTitle } from "../../hooks/useChangeTitle";
 import { toast } from 'react-toastify';
 import axios from 'axios'
 import { authContext } from "../../context/authContext";

@@ -14,19 +14,71 @@ export const userFunctions = () => {
                     setUser({
                         isLoggedIn: true,
                         token: token,
-                        user: data.user
+                        user: data.user,
                     })
                 }, (err) => {
-                    throw new Error(err.response.data.error)
                     console.log(err)
+                    throw new Error(err.response.data.error)
                 })
             } catch (err) {
-                throw new Error("Please try again later")
+                console.log(err);
+
             }
         }
     }
-    const emailAuth = (emali: string) => {
-        
+    const emailAuth = async (email: string) => {
+        try {
+            await axios.post("/auth/email", { email }).then((data: any) => {
+                console.log(data.data);
+
+                if (data.data.type === "password") {
+                    setUser({
+                        isLoggedIn: false,
+                        token: "",
+                        user: {},
+                        auth: data.data
+                    })
+                }
+                if (data.data.type === "secret") {
+                    setUser({
+                        isLoggedIn: false,
+                        token: "",
+                        user: {},
+                        auth: data.data
+                    })
+                }
+            }, (err) => {
+                console.log(err);
+                throw new Error(err.response.data.error)
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
-    return { fetchUser, emailAuth }
+
+    const passwordAuth = async (password: string) => {
+        try {
+            let authToken = user.auth.token
+            if (!authToken) throw new Error("no token")
+            if (authToken) {
+                await axios.post("/auth/password", { password, token: authToken }).then((data: any) => {
+                    console.log(data);
+                    setUser({
+                        isLoggedIn: true,
+                        token: data.token,
+                        user: data.user,
+                    })
+                }, (err) => {
+                    console.log(err);
+                    throw new Error(err.response.data.error)
+                })
+            }
+
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    return { fetchUser, emailAuth, passwordAuth }
 }
