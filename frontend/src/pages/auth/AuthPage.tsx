@@ -4,28 +4,44 @@ import { useTitle } from "../../hooks/useChangeTitle";
 import { toast } from 'react-toastify';
 import axios from 'axios'
 import { authContext } from "../../context/authContext";
-import { userFunctions } from "../../hooks/useUserFunctions";
 
 export const AuthPage = () => {
     useTitle("Login")
     const navigate = useNavigate()
-    let { emailAuth } = userFunctions()
     const { user, setUser } = useContext(authContext)
     const [email, setEmail] = useState("")
     useEffect(() => {
-        if (user.isLoggedIn) return navigate("/app")
-    }, [])
+        if (user.isLoggedIn === true && user.auth.none === true) return navigate("/app")
+    }, [user.isLoggedIn])
 
     const submitHandler = async () => {
-        if (!email) return toast.error("Email Not Found")
+        if (!email) return toast.error("Please Enter Your Email")
+        try {
 
-        emailAuth(email).then(() => {
-            console.log(user)
-        }, (err) => {
-            console.log(err);
-            toast.error(err.toString())
 
-        })
+            await axios.post("/auth/email", { email }).then((data: any) => {
+                setUser({
+                    isLoggedIn: false,
+                    token: "",
+                    user: {},
+                    auth: data.data
+                })
+
+                if (data.data.type === "password") {
+                    navigate("/auth/password")
+                } else if (data.data.type == "secret") {
+                    navigate("/auth/secret")
+                } else { toast.error("Some error occured please try again later. if the issue persist please contact us.") }
+
+            }, (err) => {
+                console.log(err);
+
+                toast.error(err.response.data.error)
+            })
+
+        } catch (err) {
+            toast.error("Some error occured please try again later. if the issue persist please contact us.")
+        }
     }
 
     return (

@@ -12,12 +12,12 @@ export const SecretPage = () => {
     const { user, setUser }: any = useContext(authContext)
     const navigate = useNavigate()
     useEffect(() => {
-        if (user.isLoggedIn) return navigate("/app")
-    }, [])
+        if (user.isLoggedIn || user.auth.none === true) return navigate("/app")
+        if (user.auth.none === true || user.auth.type != "secret") return navigate("/auth")
+    }, [user.isLoggedIn])
 
     const submitHandler = async () => {
         if (!secret) return toast.error("Email Not Found")
-        console.log(user);
 
 
         try {
@@ -25,14 +25,12 @@ export const SecretPage = () => {
                 secret,
                 token: user.auth.token
             }).then(({ data }) => {
-                console.log(data);
-                
                 if (data) {
                     setUser({
                         isLoggedIn: false,
                         token: "",
-                        ...user,
-                        auth: { none: false, type: "setPassword", token: data.token }
+                        user: {},
+                        auth: { none: false, type: "newpassword", token: data.token }
                     })
                     navigate("/auth/setPassword")
                 } else navigate("/auth")

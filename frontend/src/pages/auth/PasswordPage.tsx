@@ -13,7 +13,8 @@ export const PasswordPage = () => {
     const { user, setUser }: any = useContext(authContext)
     useEffect(() => {
         if (user.isLoggedIn || user.auth.none === true) return navigate("/app")
-    }, [])
+        if (user.auth.none === true || user.auth.type!="password") return navigate("/auth")
+    }, [user.isLoggedIn])
     const submitHandler = async () => {
         if (!password) return toast.error("Email Not Found")
 
@@ -22,8 +23,7 @@ export const PasswordPage = () => {
                 password,
                 token: user.auth.token
             }).then(({ data }) => {
-                if (data) {
-                    console.log(data);
+                if (data.user && data.token) {
                     setUser({
                         isLoggedIn: true,
                         token: data.token,

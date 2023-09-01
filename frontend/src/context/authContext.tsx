@@ -2,11 +2,10 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-axios.defaults.baseURL = 'http://localhost:8080';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-let user: any
-let setUser: any
+
+let user: any = {};
+let setUser: any = () => { }
 
 const authContext = createContext({ user, setUser })
 
@@ -17,33 +16,40 @@ function AuthProvider({ children }) {
         user: {},
         auth: {},
     });
-    
+
     useEffect(() => {
-        const token = localStorage.getItem("token")
-        if (token) {
+        try {
             if (user.isLoggedIn === true) return
-            if (user.token === token) return
-            axios.defaults.headers.common['x-auth-token'] = token;
-            axios.get("/auth/getuserdata").then((data) => {
-                console.log(data);
+            let token = localStorage.getItem("token")
+
+            if (!token) {
                 setUser({
-                    isLoggedIn: true,
-                    token: token,
-                    user: data.data.user,
+                    isLoggedIn: false,
+                    token: "",
+                    user: {},
                     auth: { none: true },
                 })
-                console.log("after useefeect");
-                console.log(user);
-            }, (err) => {
-                toast.error("Authentication error Please Relogin")
-                console.log(err);
+            } else if (token) {
 
-            })
-        }
-    }, [])
+                axios.defaults.headers.common["x-auth-token"] = token
+                axios.get("/auth/getuserdata").then((data) => {
+                    setUser({
+                        isLoggedIn: true,
+                        token: token,
+                        user: data.data.user,
+                        auth: { none: true },
+                    })
 
+                }, (err) => {
+                    toast.error("some error occured please relogin.")
+                    console.log(err);
+                })
+            } else { console.log("Some error occured"); }
+        } catch (err) { console.log(err) }
+    }, [user.isLoggedIn])
 
     return (<authContext.Provider value={{ user, setUser }}>{children}</authContext.Provider>);
+
 }
 
 export { AuthProvider, authContext };

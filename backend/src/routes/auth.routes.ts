@@ -34,6 +34,21 @@ let nullUser: user = {
 };
 
 const router = express.Router();
+
+router.get("/getuserdata", verifyUser, async (req: Request, res: Response) => {
+  try {
+    const user = req.user;
+    res.json({ user });
+  } catch (error) {
+    console.log({ error });
+
+    res
+      .status(500)
+      .json({ error: "Internal Server Error. Please Try again later." });
+  }
+});
+
+
 router.post("/email", async (req: Request, res: Response) => {
   if (!req.body) return res.status(400).json({ error: "Data not provided." });
   let email = req.body.email;
@@ -46,12 +61,12 @@ router.post("/email", async (req: Request, res: Response) => {
       nullUser;
     if (user === nullUser)
       return res.status(400).json({ error: "No User Found" });
-    if (user.password === "") {
+    if (user.password == "") {
       let jwtToke = jwt.sign({ email }, "thisisasecretlogin");
-      res.json({ type: "secret", token: jwtToke } );
+      res.json({ type: "secret", token: jwtToke });
     } else {
       let jwtToken = jwt.sign({ email }, "thisisapasswordlogin");
-      res.json( { type: "password", token: jwtToken } );
+      res.json({ type: "password", token: jwtToken });
     }
   } catch (e) {
     return res
@@ -83,7 +98,7 @@ router.post("/password", async (req: Request, res: Response) => {
     if (!user.password)
       return res.status(500).json({ error: "refresh your page" });
     try {
-      const passwordCheck = bcrypt.compare(password, user.password);
+      const passwordCheck = await bcrypt.compare(password, user.password);
 
       if (!passwordCheck)
         return res.status(400).json({ error: "Wrong Password" });
@@ -159,9 +174,11 @@ router.post("/secret", async (req: Request, res: Response) => {
       if (user.secret != secret)
         return res.status(500).json({ error: "Wrong secret" });
       let newJwt = jwt.sign({ email, user: user.user }, "secretverified");
-      res.json({ error: { type: "newpassword", token: newJwt } });
+      res.json({ type: "newpassword", token: newJwt });
     }
-  } catch (e) {}
+  } catch (e) {
+    res.status(500).json({ error: "Some error occured please try again later" });
+}
 });
 router.post("/setpassword", async (req: Request, res: Response) => {
   if (!req.body.token || !req.body.password)
@@ -240,19 +257,6 @@ router.post("/setpassword", async (req: Request, res: Response) => {
     return res
       .status(500)
       .json({ error: `some error occured please try again later. ${e}` });
-  }
-});
-
-router.get("/getuserdata", verifyUser, async (req: Request, res: Response) => {
-  try {
-    const user = req.user;
-    res.json({ user });
-  } catch (error) {
-    console.log(error);
-
-    res
-      .status(500)
-      .json({ error: "Internal Server Error. Please Try again later." });
   }
 });
 

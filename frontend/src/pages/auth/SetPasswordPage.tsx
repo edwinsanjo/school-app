@@ -13,11 +13,11 @@ export const SetPasswordPage = () => {
     const navigate = useNavigate()
     useEffect(() => {
         if (user.isLoggedIn || user.auth.none === true) return navigate("/app")
-    }, [])
+        if (user.auth.none === true || user.auth.type != "newpassword") return navigate("/auth")
+    }, [user.isLoggedIn])
 
     const submitHandler = async () => {
         if (!newPassword) return toast.error("Email Not Found")
-        console.log(user);
 
 
         try {
@@ -26,14 +26,12 @@ export const SetPasswordPage = () => {
                 token: user.auth.token
             }).then(({ data }) => {
                 if (data) {
-                    console.log(data);
                     setUser({
                         isLoggedIn: true,
                         token: data.token,
                         user: data.user,
                         auth: { none: true },
                     })
-                    console.log(user);
 
                     localStorage.setItem("token", data.token)
                     navigate("/app")
@@ -43,7 +41,6 @@ export const SetPasswordPage = () => {
             })
         } catch (error) {
             toast.error("some error occured. please try again later")
-            console.log(error);
         }
     }
 

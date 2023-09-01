@@ -4,6 +4,7 @@ import { authContext } from "../context/authContext"
 
 export const userFunctions = () => {
     let { user, setUser } = useContext(authContext)
+
     const fetchUser = async () => {
         let token = localStorage.getItem("token")
         if (!token) return
@@ -14,8 +15,10 @@ export const userFunctions = () => {
                     setUser({
                         isLoggedIn: true,
                         token: token,
-                        user: data.user,
+                        user: data.data.user,
+                        auth: { none: true },
                     })
+                    return
                 }, (err) => {
                     console.log(err)
                     throw new Error(err.response.data.error)
@@ -28,29 +31,21 @@ export const userFunctions = () => {
     }
     const emailAuth = async (email: string) => {
         try {
-            await axios.post("/auth/email", { email }).then((data: any) => {
-                console.log(data.data);
-
-                if (data.data.type === "password") {
-                    setUser({
-                        isLoggedIn: false,
-                        token: "",
-                        user: {},
-                        auth: data.data
-                    })
-                }
-                if (data.data.type === "secret") {
-                    setUser({
-                        isLoggedIn: false,
-                        token: "",
-                        user: {},
-                        auth: data.data
-                    })
-                }
+            let data = await axios.post("/auth/email", { email }).then((data: any) => {
+                console.log(data.data.type);
+                setUser({
+                    isLoggedIn: false,
+                    token: "",
+                    user: {},
+                    auth: data.data
+                })
+                return data.data.type
             }, (err) => {
                 console.log(err);
                 throw new Error(err.response.data.error)
             })
+            return data
+
         } catch (err) {
             console.log(err);
         }

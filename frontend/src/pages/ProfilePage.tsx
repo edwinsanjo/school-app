@@ -8,8 +8,8 @@ export const ProfilePage = () => {
     const navigate = useNavigate()
     const { user }: any = React.useContext(authContext)
     useEffect(() => {
-        if (user.isLoggedIn === false) return navigate("/login")
-    }, [])
+        if (user.isLoggedIn === false) return navigate("/app")
+    }, [user.isLoggedIn])
     useTitle(user.user.name)
     return (
         <div className="flex justify-center h-screen w-screen pt-32">
