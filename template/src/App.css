@@ -1,0 +1,23 @@
+@import url(https://fonts.googleapis.com/css?family=Jost);
+
+#root {
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  height: 85.5vh;
+}
+
+.sub-title {
+  font-size: 1.5em;
+  font-weight: 800;
+}
+
+.para {
+  font-weight: 600;
+}
+
+#Ellipse5, #Ellipse3, #Ellipse2, #Ellipse4, #Ellipse1, #Ellipse {
+  filter: blur(100px);
+}
