@@ -1,0 +1,12 @@
+@import url(https://fonts.cdnfonts.com/css/montserrat);
+
+#root {
+    margin: 0;
+    padding: 0;
+}
+
+#title {
+    font-family: Monteserrat;
+    font-style: normal;
+    line-height: normal
+}
